@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
+#include <TXLib.h>
 
 
 
@@ -32,6 +33,7 @@ int SolveSquare( double a, double b, double c,
 
     assert (x1  != NULL);
     assert (x2  != NULL);
+    assert (x1  != x2);
 
 
 
