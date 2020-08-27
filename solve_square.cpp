@@ -26,7 +26,12 @@ int SolveSquare( double a, double b, double c,
                 double* x1, double* x2)
 
     {
+    assert (std::isfinite (a));
+    assert (std::isfinite (b));
+    assert (std::isfinite (c));
 
+    assert (x1 != NULL);
+    assert (x2 != NULL);
 
     if (a == 0)
         {
@@ -90,7 +95,7 @@ int main ()
           case 1: printf ("x=%lg\n", x1);
                   break;
 
-          case 2: printf ("x1=%lg, x2= %lg\n", x1, x2);
+          case 2: printf ("x=%lg, x2= %lg\n", x1, x2);
                   break;
 
           case ROOTS_INFIN: printf ("Any number");
