@@ -30,8 +30,10 @@ int SolveSquare( double a, double b, double c,
     assert (std::isfinite (b));
     assert (std::isfinite (c));
 
-    assert (x1 != NULL);
-    assert (x2 != NULL);
+    assert (x1  != NULL);
+    assert (x2  != NULL);
+
+
 
     if (a == 0)
         {
@@ -60,6 +62,8 @@ int SolveSquare( double a, double b, double c,
         {
         double d = b * b - 4 * a * c;
 
+        if (d < 0) return 0;
+
         if (d == 0)
             {
             *x1 = -b / 2 * a;
@@ -77,7 +81,7 @@ int SolveSquare( double a, double b, double c,
 
 int main ()
     {
-    printf (" # Hello, \n"
+    printf ("# Square equation solver\n"
             " # (c) FLEXA, 2020\n\n");
 
     printf ("# Enter a, b, c: ");
