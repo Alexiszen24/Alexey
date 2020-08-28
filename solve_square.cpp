@@ -76,19 +76,21 @@ int SolveSquare( double a, double b, double c,
 
     if (a == 0)
         {
-            {   if (b == 0)
-                    {   if (c == 0)
-                            {
-                            return ROOTS_INFIN;
-                            }
-                        else
-                            return 0;
+            {
+            if (b == 0)
+                {
+                if (c == 0)
+                    {
+                    return ROOTS_INFIN;
                     }
                 else
-                    {
-                    *x1 = -c / b;
-                    return 1;
-                    }
+                    return 0;
+                }
+            else
+                {
+                *x1 = -c / b;
+                return 1;
+                }
             }
         }
     else
