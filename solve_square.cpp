@@ -4,6 +4,7 @@
 #include <TXLib.h>
 
 const int ROOTS_INFIN = -1;
+const double Precision = 1E-6;
 
 //-----------------------------------------------------------------------------
 //!  Solves a square equation a*x^2 + bx + c = 0
@@ -21,6 +22,7 @@ const int ROOTS_INFIN = -1;
 
 int SolveSquare( double a, double b, double c,
                 double* x1, double* x2);
+bool isZero(double d);
 
 int main ()
 {
@@ -73,42 +75,52 @@ int SolveSquare( double a, double b, double c,
     assert (x1  != x2);
 
     if (a == 0)
-    {
-        {   if (b == 0)
-            {   if (c == 0)
-                {
-                return ROOTS_INFIN;
-                }
-
+        {
+            {   if (b == 0)
+                    {   if (c == 0)
+                            {
+                            return ROOTS_INFIN;
+                            }
+                        else
+                            return 0;
+                    }
                 else
-                return 0;
-            }
-
-            else
-            {
-            *x1 = -c / b;
-            return 1;
+                    {
+                    *x1 = -c / b;
+                    return 1;
+                    }
             }
         }
-    }
     else
-    {
-        double d = b * b - 4 * a * c;
-
-        if (d < 0) return 0;
-
-        if (d == 0)
         {
-        *x1 = -b / 2 * a;
+            double d = b * b - 4 * a * c;
+
+            if (d < 0 && isZero(d)==0)
+                return 0;
+
+            if (isZero(d))
+                {
+                *x1 = -b / 2 * a;
+                return 1;
+                }
+            else
+                {
+                double sqrt_d = sqrt (d);
+
+                *x1 = (-b + sqrt_d) / (2 * a);
+                *x2 = (-b - sqrt_d) / (2 * a);
+                return 2;
+                }
+        }
+}
+
+bool isZero(double d)
+
+{
+    if (abs(d)==Precision)
+        {
         return 1;
         }
-        else
-        {
-        double sqrt_d = sqrt (d);
-
-        *x1 = (-b + sqrt_d) / (2 * a);
-        *x2 = (-b - sqrt_d) / (2 * a);
-        return 2;
-        }
-    }
+    else
+        return 0;
 }
