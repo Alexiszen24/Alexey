@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <TXLib.h>
 
-
+const int ROOTS_INFIN = -1;
 
 //-----------------------------------------------------------------------------
 //!  Solves a square equation a*x^2 + bx + c = 0
@@ -19,70 +19,11 @@
 //!  @BUT In case of infinite number of roots returns ROOTS_INFIN.
 //-----------------------------------------------------------------------------
 
-
-
-const int ROOTS_INFIN = -1;
-
 int SolveSquare( double a, double b, double c,
-                double* x1, double* x2)
-
-    {
-    assert (std::isfinite (a));
-    assert (std::isfinite (b));
-    assert (std::isfinite (c));
-
-    assert (x1  != NULL);
-    assert (x2  != NULL);
-    assert (x1  != x2);
-
-
-
-    if (a == 0)
-        {
-
-            {
-            if (b == 0)
-                {
-
-                if (c == 0)
-                    {
-                    return ROOTS_INFIN;
-                    }
-
-                else
-                    return 0;
-                }
-
-            else
-                {
-                *x1 = -c / b;
-                return 1;
-                }
-            }
-        }
-    else
-        {
-        double d = b * b - 4 * a * c;
-
-        if (d < 0) return 0;
-
-        if (d == 0)
-            {
-            *x1 = -b / 2 * a;
-            return 1;
-            }
-        else {
-            double sqrt_d = sqrt (d);
-
-            *x1 = (-b + sqrt_d) / (2 * a);
-            *x2 = (-b - sqrt_d) / (2 * a);
-            return 2;
-            }
-        }
-    }
+                double* x1, double* x2);
 
 int main ()
-    {
+{
     printf ("# Square equation solver\n"
             " # (c) FLEXA, 2020\n\n");
 
@@ -95,22 +36,79 @@ int main ()
     int nRoots = SolveSquare (a, b, c, &x1, &x2) ;
         switch (nRoots)
 
-        { case 0: printf ("No roots\n");
-                  break;
+        { case 0:
+                printf ("No roots\n");
+                break;
 
-          case 1: printf ("x=%lg\n", x1);
-                  break;
+          case 1:
+                printf ("x=%lg\n", x1);
+                break;
 
-          case 2: printf ("x=%lg, x2= %lg\n", x1, x2);
-                  break;
+          case 2:
+                printf ("x=%lg, x2= %lg\n", x1, x2);
+                break;
 
-          case ROOTS_INFIN: printf ("Any number");
-                  break;
+          case ROOTS_INFIN:
+                printf ("Any number");
+                break;
 
-          default: printf("ERROR") ;
-                   return 1;
-          }
+          default:
+                printf("ERROR") ;
+                return 1;
+        }
 
 
     return 0;
+}
+
+int SolveSquare( double a, double b, double c,
+                double* x1, double* x2)
+
+{   assert (std::isfinite (a));
+    assert (std::isfinite (b));
+    assert (std::isfinite (c));
+
+    assert (x1  != NULL);
+    assert (x2  != NULL);
+    assert (x1  != x2);
+
+    if (a == 0)
+    {
+        {   if (b == 0)
+            {   if (c == 0)
+                {
+                return ROOTS_INFIN;
+                }
+
+                else
+                return 0;
+            }
+
+            else
+            {
+            *x1 = -c / b;
+            return 1;
+            }
+        }
     }
+    else
+    {
+        double d = b * b - 4 * a * c;
+
+        if (d < 0) return 0;
+
+        if (d == 0)
+        {
+        *x1 = -b / 2 * a;
+        return 1;
+        }
+        else
+        {
+        double sqrt_d = sqrt (d);
+
+        *x1 = (-b + sqrt_d) / (2 * a);
+        *x2 = (-b - sqrt_d) / (2 * a);
+        return 2;
+        }
+    }
+}
