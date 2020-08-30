@@ -30,7 +30,7 @@ const double Precision = 1E-6;
 int SolveSquare( double a, double b, double c,
                 double* x1, double* x2);
 bool isZero(double d);
-void check_correct_enter(double* a, double* b, double* c);
+int check_correct_enter(double* a, double* b, double* c);
 void clean_stdin ();
 void unitest_Is_Zero();
 void unitest_Solve_Square();
@@ -50,38 +50,42 @@ int main ()
 
     double a = 0, b = 0, c = 0;
 
-    check_correct_enter( &a, &b, &c);
+    int counter_for_main = check_correct_enter( &a, &b, &c);
 
-    double x1 = 0, x2 = 0;
-    int nRoots = SolveSquare (a, b, c, &x1, &x2) ;
-    switch (nRoots)
+    if (counter_for_main)
+        {
+        double x1 = 0, x2 = 0;
+        int nRoots = SolveSquare (a, b, c, &x1, &x2) ;
+        switch (nRoots)
 
-    {
-        case 0:
-            printf ("Answer:\n"
-                    "No roots\n");
-            break;
+            {
+                case 0:
+                    printf ("Answer:\n"
+                            "No roots\n");
+                    break;
 
-        case 1:
-            printf ("Answer:\n"
-                    "x=%+lg\n", x1);
-            break;
+                case 1:
+                    printf ("Answer:\n"
+                            "x=%+lg\n", x1);
+                    break;
 
-        case 2:
-            printf ("Answer:\n"
-                    "x=%+lg, x2= %+lg\n", x1, x2);
-            break;
+                case 2:
+                    printf ("Answer:\n"
+                            "x1=%+lg, x2= %+lg\n", x1, x2);
+                    break;
 
-        case ROOTS_INFIN:
-            printf ("Answer:\n"
-                    "Any number");
-            break;
+                case ROOTS_INFIN:
+                    printf ("Answer:\n"
+                            "Any number");
+                    break;
 
-        default:
-                printf("ERROR") ;
-                return 1;
+                default:
+                        printf("ERROR") ;
+                        return 1;
             }
-
+        }
+    else
+        return 0;
 
     return 0;
 }
@@ -98,22 +102,22 @@ int SolveSquare( double a, double b, double c,
     assert (x1  != x2);
 
     if (a == 0)
+        {
+        if (b == 0)
             {
-            if (b == 0)
+            if (c == 0)
                 {
-                if (c == 0)
-                    {
-                    return ROOTS_INFIN;
-                    }
-                else
-                    return 0;
+                return ROOTS_INFIN;
                 }
             else
-                {
-                *x1 = -c / b;
-                return 1;
-                }
+                return 0;
             }
+        else
+            {
+            *x1 = -c / b;
+            return 1;
+            }
+        }
     else
         {
             double d = b * b - 4 * a * c;
@@ -148,28 +152,38 @@ bool isZero(double value)
 
 // The presented function checks the correctness of the entered data
 
-void check_correct_enter(double* a, double* b, double* c)
+int check_correct_enter(double* a, double* b, double* c)
 {
     assert (a != NULL);
 	assert (b != NULL);
 	assert (c != NULL);
 	assert (a != b);
 	assert (a != c);
+	assert (b != c);
 
     int checkInput = scanf("%lg %lg %lg", a, b, c);
+    int enter_counter = 0;
 
-    if (checkInput < 3)
-        {
-        while (checkInput < 3)
+        while (checkInput < 3 && enter_counter < 5)
             {
+                printf ("\n #Incorrect input. Attempts left: %d."
+				"\n # Please, put numeric values: ",
+                5 - enter_counter);
+
                 clean_stdin();
 
-                printf ("\n # Incorrect enter"
-                        "\n # Please, put numeric values: ");
-
                 checkInput = scanf("%lg %lg %lg", a, b, c);
+                enter_counter++;
             }
-        }
+        if (enter_counter > 4)
+            {
+            printf ("\n # Number of attempts exceeded"
+                        "\n # End of the program");
+            return 0;
+            }
+        else
+            return 1;
+
 }
 
 //-----------------------------------------------------------------------------
@@ -205,7 +219,7 @@ void unitest_Is_Zero()
         {
             printf ("\n # UNITTEST ERROR: 'bool Is_Zero ()' test failed.\n"
 				    "param_for_check = %lg\n"
-				    " expected_result: true//1\n",param_for_check);
+				    " expected_result: true//1\n", param_for_check);
         }
 
     param_for_check = 0.01;
@@ -214,7 +228,7 @@ void unitest_Is_Zero()
         {
             printf ("\n # UNITTEST ERROR: 'bool Is_Zero ()' test failed.\n"
 				    "param_for_check = %lg\n"
-				    " expected_result: false//0\n",param_for_check);
+				    " expected_result: false//0\n", param_for_check);
         }
 
     param_for_check = 0.0000000001;
@@ -223,7 +237,7 @@ void unitest_Is_Zero()
         {
             printf ("\n # UNITTEST ERROR: 'bool Is_Zero ()' test failed.\n"
 				    "param_for_check = %lg\n"
-				    " expected_result: true//1\n",param_for_check);
+				    " expected_result: true//1\n", param_for_check);
         }
 
     param_for_check = 1E-6;
@@ -232,7 +246,7 @@ void unitest_Is_Zero()
         {
         printf ("\n # UNITTEST ERROR: 'bool Is_Zero ()' test failed.\n"
                 "param_for_check = %lg\n"
-                " expected_result: true//1\n",param_for_check);
+                " expected_result: true//1\n", param_for_check);
         }
 
     printf("\n # Testing 'IsZero()' complete.\n\n");
